@@ -8,7 +8,7 @@
     "_HotelReservation__phone_number": "+341234567",
     "_HotelReservation__room_type": "SINGLE",
     "_HotelReservation__num_days": 1,
-    "_HotelReservation__localizer": "a4a89f3b15f0abe4b6f571088039defd"
+    "_HotelReservation__localizer": "450a53be9b39944e62e7164ca5f5aadf"
   },
   {
     "_HotelReservation__credit_card_number": "5105105105105100",
@@ -19,7 +19,7 @@
     "_HotelReservation__phone_number": "+341234567",
     "_HotelReservation__room_type": "DOUBLE",
     "_HotelReservation__num_days": 2,
-    "_HotelReservation__localizer": "4f05d0dc45b0dc42f57b7d51632ceab2"
+    "_HotelReservation__localizer": "74a961610a0f1c048976007358ba7155"
   },
   {
     "_HotelReservation__credit_card_number": "5105105105105100",
@@ -30,7 +30,7 @@
     "_HotelReservation__phone_number": "+341234567",
     "_HotelReservation__room_type": "SUITE",
     "_HotelReservation__num_days": 9,
-    "_HotelReservation__localizer": "130b45f9e5125fc970a0b0a4fe5d6867"
+    "_HotelReservation__localizer": "846940dc519dfeabf68522ff4e71ae8e"
   },
   {
     "_HotelReservation__credit_card_number": "5105105105105100",
@@ -41,6 +41,6 @@
     "_HotelReservation__phone_number": "+341234567",
     "_HotelReservation__room_type": "SUITE",
     "_HotelReservation__num_days": 10,
-    "_HotelReservation__localizer": "b822a3c87f11961aafbcab4ff5fe35c8"
+    "_HotelReservation__localizer": "2e6701dd0b065faa56d7199d878d928e"
   }
 ]
