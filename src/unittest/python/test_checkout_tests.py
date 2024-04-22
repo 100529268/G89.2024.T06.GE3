@@ -52,8 +52,9 @@ class TestDeliverProduct(TestCase):
     def test_checkout_ok(self):
         """basic path , tracking_code is found , and date = today"""
         my_manager = HotelManager()
-        value = my_manager.guest_checkout(
-            "4f57880d4240350db9b276c84edaacc923a63906a408cc8da2b52c49213d3859")
+        room_key = "4f57880d4240350db9b276c84edaacc923a63906a408cc8da2b52c49213d3859"
+
+        value = my_manager.guest_checkout(room_key)
         self.assertTrue(value)
 
         file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"

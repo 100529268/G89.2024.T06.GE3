@@ -1,23 +1,24 @@
+''' Class HotelStay (GE2.2) '''
 from datetime import datetime
 import hashlib
 
-class HotelStay:
+class HotelStay():
     """Class for representing hotel stays"""
     def __init__(self,
-                 id_card: str,
-                 localizer: str,
-                 num_days: int,
-                 room_type: str):
+                 idcard:str,
+                 localizer:str,
+                 numdays:int,
+                 roomtype:str):
         """constructor for HotelStay objects"""
         self.__alg = "SHA-256"
-        self.__type = room_type
-        self.__id_card = id_card
+        self.__type = roomtype
+        self.__idcard = idcard
         self.__localizer = localizer
-        just_now = datetime.utcnow()
-        self.__arrival = datetime.timestamp(just_now)
-        # timestamp is represented in seconds.miliseconds
-        # to add the number of days we must express num_days in seconds
-        self.__departure = self.__arrival + (num_days * 24 * 60 * 60)
+        justnow = datetime.utcnow()
+        self.__arrival = datetime.timestamp(justnow)
+        #timestamp is represented in seconds.miliseconds
+        #to add the number of days we must express num_days in seconds
+        self.__departure = self.__arrival + (numdays * 24 * 60 * 60)
         self.__room_key = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
@@ -29,11 +30,11 @@ class HotelStay:
     @property
     def id_card(self):
         """Property that represents the product_id of the patient"""
-        return self.__id_card
+        return self.__idcard
 
     @id_card.setter
     def id_card(self, value):
-        self.__id_card = value
+        self.__idcard = value
 
     @property
     def localizer(self):
