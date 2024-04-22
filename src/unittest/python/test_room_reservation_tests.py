@@ -22,11 +22,10 @@ class TestHotelReservation(TestCase):
         if os.path.exists(my_file):
             remove(my_file)
 
-
     @staticmethod
     def read_file():
         """ this method read a Json file and return the value """
-        my_file= JSON_FILES_PATH + "store_reservation.json"
+        my_file = JSON_FILES_PATH + "store_reservation.json"
         try:
             with open(my_file, "r", encoding="utf-8", newline="") as file:
                 data = json.load(file)
@@ -175,7 +174,8 @@ class TestHotelReservation(TestCase):
                                                       name,
                                                       phone_number,
                                                       room_type,
-                                                      arrival,days)
+                                                      arrival,
+                                                      days)
                         found = False
                         for k in my_data:
                             if k["_HotelReservation__localizer"] == valor:

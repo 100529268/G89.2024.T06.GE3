@@ -17,15 +17,14 @@ class TestDeliverProduct(TestCase):
         """first prepare the stores"""
         store_reservation = JSON_FILES_PATH + "store_reservation.json"
         store_checkin = JSON_FILES_PATH + "store_check_in.json"
-        file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"
-
+        file_store_check_out = JSON_FILES_PATH + "store_check_out.json"
 
         if os.path.isfile(store_reservation):
             os.remove(store_reservation)
         if os.path.isfile(store_checkin):
             os.remove(store_checkin)
-        if os.path.isfile(file_store_ckeck_out):
-            os.remove(file_store_ckeck_out)
+        if os.path.isfile(file_store_check_out):
+            os.remove(file_store_check_out)
 
         #add orders and shipping info in the stores
         my_manager = HotelManager()
@@ -46,8 +45,6 @@ class TestDeliverProduct(TestCase):
         with freeze_time("2024/07/01 13:00:00"):
             my_manager.guest_arrival(file_test)
 
-
-
     @freeze_time("2024-07-02")
     def test_checkout_ok(self):
         """basic path , tracking_code is found , and date = today"""
@@ -57,9 +54,9 @@ class TestDeliverProduct(TestCase):
         value = my_manager.guest_checkout(room_key)
         self.assertTrue(value)
 
-        file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"
-        # check store_ckeck_out
-        with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        file_store_check_out = JSON_FILES_PATH + "store_check_out.json"
+        # check store_check_out
+        with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
             data_list = json.load(file)
         found = False
         print(data_list)
@@ -77,15 +74,14 @@ class TestDeliverProduct(TestCase):
             "4f57880d4240350db9b276c84edaacc923a63906a408cc8da2b52c49213d3859")
         self.assertTrue(value)
 
-        file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"
+        file_store_check_out = JSON_FILES_PATH + "store_check_out.json"
 
         # read the file  to compare
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_original = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_original = ""
-
 
         with self.assertRaises(HotelManagementException) as context_manager:
             my_manager.guest_checkout(
@@ -93,13 +89,14 @@ class TestDeliverProduct(TestCase):
         self.assertEqual(context_manager.exception.message, "Guest is already out")
 
         # read the file again to compare
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_new = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_new = ""
 
         self.assertEqual(hash_new, hash_original)
+
     @freeze_time("2024-07-04")
     def test_guest_checkout_no_date(self):
         """path tracking_code is found , and date is not today"""
@@ -157,12 +154,12 @@ class TestDeliverProduct(TestCase):
     @freeze_time("2024-07-02")
     def test_checkin_code_not_found_date_signature(self):
         """path: signature is not found in store_check_in"""
-        file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"
+        file_store_check_out = JSON_FILES_PATH + "store_check_out.json"
         my_manager = HotelManager()
         # read the file  to compare
 
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_original = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_original = ""
@@ -173,8 +170,8 @@ class TestDeliverProduct(TestCase):
         self.assertEqual(context_manager.exception.message, "Error: room key not found")
 
         # read the file again to compare
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_new = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_new = ""
@@ -199,7 +196,7 @@ class TestDeliverProduct(TestCase):
         """for testing: store_check_in is empty"""
         #write a store_check_in empty
         file_store_check_in = JSON_FILES_PATH + "store_check_in.json"
-        data_list=[]
+        data_list = []
         with open(file_store_check_in, "w", encoding="utf-8", newline="") as file:
             json.dump(data_list, file, indent=2)
 
