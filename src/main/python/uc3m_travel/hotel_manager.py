@@ -8,6 +8,8 @@ from uc3m_travel.hotel_stay import HotelStay
 from uc3m_travel.hotel_management_config import JSON_FILES_PATH
 from freezegun import freeze_time
 
+from uc3m_travel.storage.json_store import JsonStore
+
 
 class HotelManager:
     """Class with all the methods for managing reservations and stays"""
@@ -139,25 +141,6 @@ class HotelManager:
                          arrival_date: str,
                          num_days: int) -> str:
         """manges the hotel reservation: creates a reservation and saves it into a json file"""
-
-        r = r'^[0-9]{8}[A-Z]{1}$'
-        my_regex = re.compile(r)
-        if not my_regex.fullmatch(id_card):
-            raise HotelManagementException("Invalid IdCard format")
-        if not self.validate_dni(id_card):
-            raise HotelManagementException("Invalid IdCard letter")
-
-        room_type = self.validate_room_type(room_type)
-
-        r = r"^(?=^.{10,50}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$"
-        my_regex = re.compile(r)
-        regex_matches = my_regex.fullmatch(name_surname)
-        if not regex_matches:
-            raise HotelManagementException("Invalid name format")
-        credit_card = self.validate_creditcard(credit_card)
-        arrival_date = self.validate_arrival_date(arrival_date)
-        num_days = self.validate_num_days(num_days)
-        phone_number = self.validate_phone_number(phone_number)
         my_reservation = HotelReservation(id_card=id_card,
                                           credit_card_number=credit_card,
                                           name_surname=name_surname,
@@ -165,53 +148,13 @@ class HotelManager:
                                           room_type=room_type,
                                           arrival=arrival_date,
                                           num_days=num_days)
-
-        # escribo el fichero Json con todos los datos
-        file_store = JSON_FILES_PATH + "store_reservation.json"
-
-        #leo los datos del fichero si existe , y si no existe creo una lista vacia
-        try:
-            with open(file_store, "r", encoding="utf-8", newline="") as file:
-                data_list = json.load(file)
-        except FileNotFoundError:
-            data_list = []
-        except json.JSONDecodeError as ex:
-            raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from ex
-
-        #compruebo que esta reserva no esta en la lista
-        for item in data_list:
-            if my_reservation.localizer == item["_HotelReservation__localizer"]:
-                raise HotelManagementException("Reservation already exists")
-            if my_reservation.id_card == item["_HotelReservation__id_card"]:
-                raise HotelManagementException("This ID card has another reservation")
-        #añado los datos de mi reserva a la lista , a lo que hubiera
-        data_list.append(my_reservation.__dict__)
-
-        #escribo la lista en el fichero
-        try:
-            with open(file_store, "w", encoding="utf-8", newline="") as file:
-                json.dump(data_list, file, indent=2)
-        except FileNotFoundError as ex:
-            raise HotelManagementException("Wrong file  or file path") from ex
-
+        reservation_store = JsonStore()
+        reservation_store.save_reservation(my_reservation)
         return my_reservation.localizer
 
-    def guest_arrival(self, file_input: str) -> str:
-        """manages the arrival of a guest with a reservation"""
-        try:
-            with open(file_input, "r", encoding="utf-8", newline="") as file:
-                input_list = json.load(file)
-        except FileNotFoundError as ex:
-            raise HotelManagementException("Error: file input not found") from ex
-        except json.JSONDecodeError as ex:
-            raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
-        # comprobar valores del fichero
-        try:
-            my_localizer = input_list["Localizer"]
-            my_id_card = input_list["IdCard"]
-        except KeyError as e:
-            raise HotelManagementException("Error - Invalid Key in JSON") from e
+    def guest_arrival(self, file_input: str) -> str:
+        my_id_card, my_localizer = self.read_input_from_file(file_input)
 
         r = r'^[0-9]{8}[A-Z]{1}$'
         my_regex = re.compile(r)
@@ -228,13 +171,7 @@ class HotelManager:
 
         #leo los datos del fichero , si no existe deber dar error porque el almacen de reservaa
         # debe existir para hacer el checkin
-        try:
-            with open(file_store, "r", encoding="utf-8", newline="") as file:
-                store_list = json.load(file)
-        except FileNotFoundError as ex:
-            raise HotelManagementException("Error: store reservation not found") from ex
-        except json.JSONDecodeError as ex:
-            raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        store_list = JsonStore().find_reservation(file_store)
         # compruebo si esa reserva esta en el almacen
         found = False
         for item in store_list:
@@ -305,6 +242,23 @@ class HotelManager:
             raise HotelManagementException("Wrong file  or file path") from ex
 
         return my_checkin.room_key
+
+    def read_input_from_file(self, file_input):
+        """manages the arrival of a guest with a reservation"""
+        try:
+            with open(file_input, "r", encoding="utf-8", newline="") as file:
+                input_list = json.load(file)
+        except FileNotFoundError as ex:
+            raise HotelManagementException("Error: file input not found") from ex
+        except json.JSONDecodeError as ex:
+            raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        # comprobar valores del fichero
+        try:
+            my_localizer = input_list["Localizer"]
+            my_id_card = input_list["IdCard"]
+        except KeyError as e:
+            raise HotelManagementException("Error - Invalid Key in JSON") from e
+        return my_id_card, my_localizer
 
     def guest_checkout(self, room_key: str) -> bool:
         """manages the checkout of a guest"""

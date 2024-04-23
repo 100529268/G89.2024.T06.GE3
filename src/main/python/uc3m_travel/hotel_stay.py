@@ -2,6 +2,8 @@
 from datetime import datetime
 import hashlib
 
+from uc3m_travel.hotel_reservation import HotelReservation
+from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class HotelStay():
     """Class for representing hotel stays"""
@@ -14,7 +16,12 @@ class HotelStay():
         self.__alg = "SHA-256"
         self.__type = room_type
         self.__idcard = id_card
+
         self.__localizer = localizer
+        reservation = HotelReservation.load_from_localizer(self.localizer)
+        if reservation.id_card != self.__idcard:
+            raise HotelManagementException("Error: localizer is not correct for this IdCard")
+
         justnow = datetime.utcnow()
         self.__arrival = datetime.timestamp(justnow)
         #timestamp is represented in seconds.miliseconds
@@ -27,6 +34,11 @@ class HotelStay():
         return "{alg:" + self.__alg + ",typ:" + self.__type + ",localizer:" + \
             self.__localizer + ",arrival:" + str(self.__arrival) + \
             ",departure:" + str(self.__departure) + "}"
+
+    @classmethod
+    def get_stay_from_room_key(cls, room_key):
+        return HotelStay()
+
 
     @property
     def id_card(self):
