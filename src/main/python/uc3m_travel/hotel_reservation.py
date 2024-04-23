@@ -1,6 +1,7 @@
 """Hotel reservation class"""
 import hashlib
 from datetime import datetime
+from .attributes.attribute_id_card import IDCard
 
 class HotelReservation:
     """Class for representing hotel reservations"""
@@ -15,7 +16,7 @@ class HotelReservation:
                  num_days:int):
         """constructor of reservation objects"""
         self.__credit_card_number = credit_card_number
-        self.__id_card = id_card
+        self.__id_card = IDCard(id_card).value
         justnow = datetime.utcnow()
         self.__arrival = arrival
         self.__reservation_date = datetime.timestamp(justnow)

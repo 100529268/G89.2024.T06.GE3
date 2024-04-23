@@ -140,21 +140,12 @@ class HotelManager:
                          num_days:int)->str:
         """manges the hotel reservation: creates a reservation and saves it into a json file"""
 
-        r = r'^[0-9]{8}[A-Z]{1}$'
-        my_regex = re.compile(r)
-        if not my_regex.fullmatch(id_card):
-            raise HotelManagementException("Invalid IdCard format")
-        if not self.validate_dni(id_card):
-            raise HotelManagementException("Invalid IdCard letter")
+        # self.validate_id_card(id_card)
+        # We need to do the same thing as validate_id_card (Make an attribute child class for it
 
         room_type = self.validate_room_type(room_type)
 
-
-        r = r"^(?=^.{10,50}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$"
-        myregex = re.compile(r)
-        regex_matches = myregex.fullmatch(name_surname)
-        if not regex_matches:
-            raise HotelManagementException("Invalid name format")
+        self.validate_name_surname(name_surname)
         credit_card = self.validatecreditcard(credit_card)
         arrival_date = self.validate_arrival_date(arrival_date)
         num_days = self.validate_numdays(num_days)
@@ -197,6 +188,21 @@ class HotelManager:
 
         return my_reservation.localizer
 
+    def validate_name_surname(self, name_surname):
+        r = r"^(?=^.{10,50}$)([a-zA-Z]+(\s[a-zA-Z]+)+)$"
+        myregex = re.compile(r)
+        regex_matches = myregex.fullmatch(name_surname)
+        if not regex_matches:
+            raise HotelManagementException("Invalid name format")
+
+    def validate_id_card(self, id_card):
+        r = r'^[0-9]{8}[A-Z]{1}$'
+        my_regex = re.compile(r)
+        if not my_regex.fullmatch(id_card):
+            raise HotelManagementException("Invalid IdCard format")
+        if not self.validate_dni(id_card):
+            raise HotelManagementException("Invalid IdCard letter")
+
     def guest_arrival(self, file_input:str)->str:
         """manages the arrival of a guest with a reservation"""
         try:
@@ -214,12 +220,7 @@ class HotelManager:
         except KeyError as e:
             raise HotelManagementException("Error - Invalid Key in JSON") from e
 
-        r = r'^[0-9]{8}[A-Z]{1}$'
-        my_regex = re.compile(r)
-        if not my_regex.fullmatch(my_id_card):
-            raise HotelManagementException("Invalid IdCard format")
-        if not self.validate_dni(my_id_card):
-            raise HotelManagementException("Invalid IdCard letter")
+        self.validate_id_card(my_id_card)
 
         self.validate_localizer(my_localizer)
         # self.validate_localizer() hay que validar
