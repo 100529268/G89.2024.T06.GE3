@@ -1,6 +1,6 @@
 """Attribute Class for Reservation Data"""
 import re
-from uc3m_travel import HotelManagementException
+from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class Attribute:
 

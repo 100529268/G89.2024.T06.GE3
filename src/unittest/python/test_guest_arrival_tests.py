@@ -12,6 +12,7 @@ from uc3m_travel import (JSON_FILES_PATH,
                          HotelManager,
                          HotelManagementException)
 
+
 class TestHotelReservation(TestCase):
     """Class for testing deliver_product"""
 
@@ -29,7 +30,6 @@ class TestHotelReservation(TestCase):
             print("deleted reservation")
             remove(my_file)
 
-
         ##insert the reservation
         with freeze_time("2024/03/22 13:00:00"):
             hotel_mngr = HotelManager()
@@ -42,7 +42,6 @@ class TestHotelReservation(TestCase):
                                                     arrival_date="01/07/2024",
                                                     num_days=1)
             self.assertEqual(localizer, "450a53be9b39944e62e7164ca5f5aadf")
-
 
     @staticmethod
     def read_file():
@@ -129,9 +128,8 @@ class TestHotelReservation(TestCase):
                             hash_new = ""
                         self.assertEqual(hash_new, hash_original)
 
-
     @freeze_time("2024/07/01 13:00:00")
-    def test_get_reservation_data_manipulated_tests( self ):
+    def test_get_reservation_data_manipulated_tests(self):
         """store_reservation_manipulated.json has a reservation manipulated with SUITE and 5 days
         insetad of SINGLE one day reservation"""
         file_test = JSON_FILES_GUEST_ARRIVAL + "key_ok.json"
@@ -147,7 +145,7 @@ class TestHotelReservation(TestCase):
         #rename the manipulated order's store
         if os.path.isfile(reservations_file):
             os.rename(reservations_file, JSON_FILES_PATH + "swap.json")
-        os.rename(JSON_FILES_PATH + "store_reservation_manipulated.json",reservations_file)
+        os.rename(JSON_FILES_PATH + "store_reservation_manipulated.json", reservations_file)
 
         # read the file to compare file content before and after method call
         if os.path.isfile(checkins_file):

@@ -2,23 +2,24 @@
 from datetime import datetime
 import hashlib
 
+
 class HotelStay():
     """Class for representing hotel stays"""
     def __init__(self,
-                 idcard:str,
-                 localizer:str,
-                 numdays:int,
-                 roomtype:str):
+                 id_card: str,
+                 localizer: str,
+                 num_days: int,
+                 room_type: str):
         """constructor for HotelStay objects"""
         self.__alg = "SHA-256"
-        self.__type = roomtype
-        self.__idcard = idcard
+        self.__type = room_type
+        self.__idcard = id_card
         self.__localizer = localizer
         justnow = datetime.utcnow()
         self.__arrival = datetime.timestamp(justnow)
         #timestamp is represented in seconds.miliseconds
         #to add the number of days we must express num_days in seconds
-        self.__departure = self.__arrival + (numdays * 24 * 60 * 60)
+        self.__departure = self.__arrival + (num_days * 24 * 60 * 60)
         self.__room_key = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
