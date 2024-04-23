@@ -100,12 +100,12 @@ class TestDeliverProduct(TestCase):
     @freeze_time("2024-07-04")
     def test_guest_checkout_no_date(self):
         """path tracking_code is found , and date is not today"""
-        file_store_ckeck_out = JSON_FILES_PATH + "store_check_out.json"
+        file_store_check_out = JSON_FILES_PATH + "store_check_out.json"
         my_manager = HotelManager()
 
         # read the file  to compare
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_original = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_original = ""
@@ -116,8 +116,8 @@ class TestDeliverProduct(TestCase):
         self.assertEqual(context_manager.exception.message, "Error: today is not the departure day")
 
         # read the file again to compare
-        if os.path.isfile(file_store_ckeck_out):
-            with open(file_store_ckeck_out, "r", encoding="utf-8", newline="") as file:
+        if os.path.isfile(file_store_check_out):
+            with open(file_store_check_out, "r", encoding="utf-8", newline="") as file:
                 hash_new = hashlib.md5(str(file).encode()).hexdigest()
         else:
             hash_new = ""
