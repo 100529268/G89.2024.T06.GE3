@@ -205,6 +205,7 @@ class TestHotelReservation(TestCase):
                                                   num_days=days)
                         self.assertEqual(c_m.exception.message, result)
 
+
                         # now we check that the signature of the file is the same
                         # (the file didn't change)
                         if os.path.isfile(reservations_file):
