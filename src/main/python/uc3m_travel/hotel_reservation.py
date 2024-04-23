@@ -2,7 +2,14 @@
 import hashlib
 from datetime import datetime
 
+from freezegun import freeze_time
 from uc3m_travel.attributes import CreditCard, IDCard, ArrivalDate, NameSurname, PhoneNumber, RoomType, NumDays
+
+from uc3m_travel.hotel_management_exception import HotelManagementException
+
+from uc3m_travel.attributes import Localizer
+
+from uc3m_travel.storage.reservation_json_store import ReservationJsonStore
 
 
 class HotelReservation:
@@ -41,6 +48,31 @@ class HotelReservation:
                      "room_type": self.__room_type,
                      }
         return "HotelReservation:" + json_info.__str__()
+
+    @classmethod
+    def load_reservation_from_localizer(cls, localizer):
+        reservations = ReservationJsonStore()
+        # reservation_data = reservations.find_reservation(Localizer(localizer).value)
+        reservation_data = reservations.find_reservation(localizer, "Error: store reservation not found")
+
+        if not reservation_data:
+            raise HotelManagementException("Error: localizer not found")
+
+        reservation_date = datetime.fromtimestamp(reservation_data['_HotelReservation__reservation_date'])
+
+        with freeze_time(reservation_date):
+            new_reservation = cls(
+                credit_card_number=reservation_data["_HotelReservation__credit_card_number"],
+                id_card=reservation_data["_HotelReservation__id_card"],
+                num_days=reservation_data["_HotelReservation__num_days"],
+                room_type=reservation_data["_HotelReservation__room_type"],
+                arrival=reservation_data["_HotelReservation__arrival"],
+                name_surname=reservation_data["_HotelReservation__name_surname"],
+                phone_number=reservation_data["_HotelReservation__phone_number"])
+        if new_reservation.localizer != localizer:
+            raise HotelManagementException("Error: reservation has been manipulated")
+        return new_reservation
+
 
     @property
     def credit_card(self):

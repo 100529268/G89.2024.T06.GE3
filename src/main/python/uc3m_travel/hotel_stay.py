@@ -2,31 +2,41 @@
 from datetime import datetime
 import hashlib
 
+from freezegun import freeze_time
 from uc3m_travel.hotel_reservation import HotelReservation
 from uc3m_travel.hotel_management_exception import HotelManagementException
+from uc3m_travel.storage.reservation_json_store import ReservationJsonStore
 
-class HotelStay():
+from uc3m_travel.storage.stay_json_store import StayJsonStore
+
+from uc3m_travel.attributes import RoomKey
+
+from uc3m_travel.storage.checkout_json_store import CheckoutJsonStore
+
+
+class HotelStay:
     """Class for representing hotel stays"""
-    def __init__(self,
-                 id_card: str,
-                 localizer: str,
-                 num_days: int,
-                 room_type: str):
+
+    def __init__(self, localizer: str, id_card: str):
         """constructor for HotelStay objects"""
         self.__alg = "SHA-256"
-        self.__type = room_type
+        self.__localizer = localizer
         self.__idcard = id_card
 
-        self.__localizer = localizer
-        reservation = HotelReservation.load_from_localizer(self.localizer)
+        reservation = HotelReservation.load_reservation_from_localizer(self.localizer)
         if reservation.id_card != self.__idcard:
-            raise HotelManagementException("Error: localizer is not correct for this IdCard")
+            raise HotelManagementException("Error: Localizer is not correct for this IdCard")
 
+        self.__type = reservation.room_type
         justnow = datetime.utcnow()
         self.__arrival = datetime.timestamp(justnow)
-        #timestamp is represented in seconds.miliseconds
-        #to add the number of days we must express num_days in seconds
-        self.__departure = self.__arrival + (num_days * 24 * 60 * 60)
+
+        reservation_format = "%d/%m/%Y"
+        date_obj = datetime.strptime(reservation.arrival, reservation_format)
+        if date_obj.date() != datetime.date(datetime.utcnow()):
+            raise HotelManagementException("Error: today is not reservation date")
+
+        self.__departure = self.__arrival + (reservation.num_days * 24 * 60 * 60)
         self.__room_key = hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     def __signature_string(self):
@@ -37,8 +47,22 @@ class HotelStay():
 
     @classmethod
     def get_stay_from_room_key(cls, room_key):
-        return HotelStay()
+        stay_stores = StayJsonStore()
+        stay = stay_stores.find_stay(RoomKey(room_key).value)
 
+        if not stay:
+            raise HotelManagementException("Error: room key not found")
+        departure_date_timestamp = stay["_HotelStay__departure"]
+
+        today = datetime.utcnow().date()
+        if datetime.fromtimestamp(departure_date_timestamp).date() != today:
+            raise HotelManagementException("Error: today is not the departure day")
+
+        return HotelStay
+
+    def check_out(self):
+        CheckoutJsonStore().add_checkout()
+        return True
 
     @property
     def id_card(self):
