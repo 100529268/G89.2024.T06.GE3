@@ -1,28 +1,26 @@
+"""Module for the hotel manager"""
+
+from uc3m_travel.hotel_management_exception import HotelManagementException
+from uc3m_travel.hotel_management_config import JSON_FILES_PATH
 from uc3m_travel.storage.json_store import JsonStore
 
 
-
 class ReservationJsonStore(JsonStore):
-    """Reservation JSON store singleton class"""
+    _file_name = JSON_FILES_PATH + "store_reservation.json"
 
     def __init__(self):
-        pass
+        super().__init__(self._file_name)
 
+    def find_reservation(self, localizer, msg):
+        return super().find_item("_HotelReservation__localizer", localizer, msg)
 
+    def add_reservation(self, reservation):
+        msg = "pass error"
+        # checks for duplicate reservations
+        if super().find_item("_HotelReservation__localizer", reservation.localizer, msg):
+            raise HotelManagementException("Reservation already exists")
 
-    # def add_item(self, item):
-    #     """Adds item to JSON store"""
-    #     from uc3m_travel import HotelManagementException
-    #     try:
-    #         reservation_found = super().find_item(item.localizer, "_HotelReservation__localizer")
-    #         if reservation_found:
-    #             raise HotelManagementException("Reservation Already Exists")
-    #         for existing_item in self._data_list:
-    #             if item.id_card == existing_item["_HotelReservation__id_card"]:
-    #                 raise HotelManagementException("This ID card has another reservation")
-    #         super().save_data(item)
-    #     except HotelManagementException as ex:
-    #         # Handle specific exceptions raised by find_item or add_item methods
-    #         raise HotelManagementException("Error adding reservation") from ex
+        if super().find_item("_HotelReservation__id_card", reservation.id_card, msg):
+            raise HotelManagementException("This ID card has another reservation")
 
-
+        super().add_item(reservation)

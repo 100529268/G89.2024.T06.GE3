@@ -120,6 +120,7 @@ class TestHotelReservation(TestCase):
 
                         with self.assertRaises(HotelManagementException) as c_m:
                             valor = mngr.guest_arrival(test_file)
+                        # print("OURS:", c_m.exception.message)
                         self.assertEqual(c_m.exception.message, result)
                         if os.path.isfile(checkins_file):
                             with open(checkins_file, "r", encoding="utf-8", newline="") as file:
