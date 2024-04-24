@@ -3,6 +3,7 @@ import re
 from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class Attribute:
+    """Attribute Class for all Data"""
 
     def __init__(self):
         self._attr_value = ''

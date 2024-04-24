@@ -1,19 +1,19 @@
 """Hotel reservation class"""
 import hashlib
 from datetime import datetime
-
-from freezegun import freeze_time
-from uc3m_travel.attributes import CreditCard, IDCard, ArrivalDate, NameSurname, PhoneNumber, RoomType, NumDays
-
 from uc3m_travel.hotel_management_exception import HotelManagementException
-
-from uc3m_travel.attributes import Localizer
-
 from uc3m_travel.storage.reservation_json_store import ReservationJsonStore
+from freezegun import freeze_time
+from .attributes import CreditCard, IDCard, ArrivalDate, NameSurname, PhoneNumber, RoomType, NumDays
+
+
+
+
 
 
 class HotelReservation:
     """Class for representing hotel reservations"""
+
     #pylint: disable=too-many-arguments, too-many-instance-attributes
     def __init__(self,
                  id_card: str,
@@ -51,14 +51,17 @@ class HotelReservation:
 
     @classmethod
     def load_reservation_from_localizer(cls, localizer):
+        """loads hotel reservation from localizer"""
         reservations = ReservationJsonStore()
         # reservation_data = reservations.find_reservation(Localizer(localizer).value)
-        reservation_data = reservations.find_reservation(localizer, "Error: store reservation not found")
+        msg = "Error: store reservation not found"
+        reservation_data = reservations.find_reservation(localizer, msg=msg)
 
         if not reservation_data:
             raise HotelManagementException("Error: localizer not found")
 
-        reservation_date = datetime.fromtimestamp(reservation_data['_HotelReservation__reservation_date'])
+        data = '_HotelReservation__reservation_date'
+        reservation_date = datetime.fromtimestamp(reservation_data[data])
 
         with freeze_time(reservation_date):
             new_reservation = cls(
@@ -72,7 +75,6 @@ class HotelReservation:
         if new_reservation.localizer != localizer:
             raise HotelManagementException("Error: reservation has been manipulated")
         return new_reservation
-
 
     @property
     def credit_card(self):

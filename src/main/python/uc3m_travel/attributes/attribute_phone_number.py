@@ -2,7 +2,7 @@
 from uc3m_travel.attributes import Attribute
 
 class PhoneNumber(Attribute):
-
+    """PhoneNumber Attribute"""
     def __init__(self, phone_number):
         super().__init__()
         self._validation_pattern = r'^(\+)[0-9]{9}'

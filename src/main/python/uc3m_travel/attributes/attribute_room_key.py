@@ -2,7 +2,7 @@
 from uc3m_travel.attributes import Attribute
 
 class RoomKey(Attribute):
-
+    """RoomKey Attribute"""
     def __init__(self, room_key):
         super().__init__()
         self._validation_pattern = r'^[a-fA-F0-9]{64}$'

@@ -2,6 +2,7 @@
 from uc3m_travel.attributes import Attribute
 
 class Localizer(Attribute):
+    """Localizer Attribute"""
 
     def __init__(self, localizer):
         super().__init__()

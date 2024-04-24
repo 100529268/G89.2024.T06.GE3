@@ -1,17 +1,11 @@
-''' Class HotelStay (GE2.2) '''
+"""Class HotelStay (GE2.2)"""
 from datetime import datetime
 import hashlib
 
-from freezegun import freeze_time
 from uc3m_travel.hotel_reservation import HotelReservation
 from uc3m_travel.hotel_management_exception import HotelManagementException
-from uc3m_travel.storage.reservation_json_store import ReservationJsonStore
-
 from uc3m_travel.storage.stay_json_store import StayJsonStore
-
 from uc3m_travel.attributes import RoomKey
-
-from uc3m_travel.storage.checkout_json_store import CheckoutJsonStore
 
 
 class HotelStay:
@@ -47,6 +41,7 @@ class HotelStay:
 
     @classmethod
     def get_stay_from_room_key(cls, room_key):
+        """gets storred stay based on room_key"""
         stay_stores = StayJsonStore()
         stay = stay_stores.find_stay(RoomKey(room_key).value)
 
@@ -60,9 +55,10 @@ class HotelStay:
 
         return HotelStay
 
-    def check_out(self):
-        CheckoutJsonStore().add_checkout()
-        return True
+    # def check_out(self):
+    #     """adds checkout to storage"""
+    #     CheckoutJsonStore().add_checkout()
+    #     return True
 
     @property
     def id_card(self):

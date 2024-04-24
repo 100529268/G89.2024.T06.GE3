@@ -4,6 +4,7 @@ from uc3m_travel.attributes import Attribute
 
 
 class ArrivalDate(Attribute):
+    """ArrivalDate Attribute"""
     def __init__(self, arrival_date):
         super().__init__()
         self._validation_pattern = r'^(([0-2]\d|-3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$'

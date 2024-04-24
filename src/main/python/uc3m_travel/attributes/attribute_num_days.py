@@ -4,6 +4,7 @@ from uc3m_travel.hotel_management_exception import HotelManagementException
 
 
 class NumDays(Attribute):
+    """NumDays Attribute"""
     def __init__(self, num_days):
         super().__init__()
         self._attr_value = self._validate(num_days)

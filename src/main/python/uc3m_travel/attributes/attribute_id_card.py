@@ -3,6 +3,7 @@ from uc3m_travel.attributes import Attribute
 from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class IDCard(Attribute):
+    """IDCard Attribute"""
 
     def __init__(self, id_card):
         super().__init__()

@@ -2,7 +2,7 @@
 from uc3m_travel.attributes import Attribute
 
 class RoomType(Attribute):
-
+    """RoomType Attribute"""
     def __init__(self, room_type):
         super().__init__()
         self._validation_pattern = r'(SINGLE|DOUBLE|SUITE)'

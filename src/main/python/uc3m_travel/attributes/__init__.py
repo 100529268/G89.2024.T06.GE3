@@ -1,3 +1,4 @@
+"""Initialization for Attributes module"""
 from .attribute import Attribute
 from .attribute_credit_card import CreditCard
 from .attribute_id_card import IDCard

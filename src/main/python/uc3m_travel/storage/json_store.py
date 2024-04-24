@@ -4,12 +4,14 @@ from uc3m_travel.hotel_management_exception import HotelManagementException
 
 
 class JsonStore:
+    """JsonStore class"""
 
     def __init__(self, file_name):
         self._file_name = file_name
         self._data_list = []
 
     def save_list_to_file(self):
+        """saves list to json file"""
         try:
             with open(self._file_name, "w", encoding="utf-8", newline="") as file:
                 json.dump(self._data_list, file, indent=2)
@@ -17,6 +19,7 @@ class JsonStore:
             raise HotelManagementException("Wrong file  or file path") from ex
 
     def load_list_from_file(self, msg):
+        """loads list from json file"""
         try:
             with open(self._file_name, "r", encoding="utf-8", newline="") as file:
                 self._data_list = json.load(file)
@@ -28,6 +31,7 @@ class JsonStore:
             raise HotelManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
     def add_item(self, item):
+        """adds item to json file"""
         if not type(item) == dict: item = item.__dict__
         self._data_list.append(item)
         self.save_list_to_file()
