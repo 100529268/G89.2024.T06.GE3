@@ -1,0 +1,28 @@
+Name                                               Stmts   Miss Branch BrPart  Cover
+------------------------------------------------------------------------------------
+uc3m_travel\__init__.py                                4      0      0      0   100%
+uc3m_travel\attributes\__init__.py                    10      0      0      0   100%
+uc3m_travel\attributes\attribute.py                   19      1      2      0    95%
+uc3m_travel\attributes\attribute_arrival_date.py       9      0      0      0   100%
+uc3m_travel\attributes\attribute_credit_card.py       22      0      6      0   100%
+uc3m_travel\attributes\attribute_id_card.py           16      0      2      0   100%
+uc3m_travel\attributes\attribute_localizer.py          9      0      0      0   100%
+uc3m_travel\attributes\attribute_name_surname.py       9      0      0      0   100%
+uc3m_travel\attributes\attribute_num_days.py          14      0      2      0   100%
+uc3m_travel\attributes\attribute_phone_number.py       9      0      0      0   100%
+uc3m_travel\attributes\attribute_room_key.py           9      0      0      0   100%
+uc3m_travel\attributes\attribute_room_type.py          9      0      0      0   100%
+uc3m_travel\hotel_management_config.py                 3      0      0      0   100%
+uc3m_travel\hotel_management_exception.py             10      1      0      0    90%
+uc3m_travel\hotel_manager.py                          27      0      2      0   100%
+uc3m_travel\hotel_reservation.py                      65      5      6      0    93%
+uc3m_travel\hotel_stay.py                             60      6      8      0    91%
+uc3m_travel\storage\__init__.py                        4      0      0      0   100%
+uc3m_travel\storage\checkout_json_store.py            20      0      4      0   100%
+uc3m_travel\storage\json_store.py                     33      4     14      1    89%
+uc3m_travel\storage\reservation_json_store.py         22      0      6      0   100%
+uc3m_travel\storage\stay_json_store.py                19      1      4      1    91%
+uc3m_travel\utils\__init__.py                          0      0      0      0   100%
+uc3m_travel\utils\json_parser.py                      25      1      4      1    93%
+------------------------------------------------------------------------------------
+TOTAL                                                427     19     60      3    95%
