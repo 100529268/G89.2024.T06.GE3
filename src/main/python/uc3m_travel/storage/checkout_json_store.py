@@ -13,6 +13,7 @@ class CheckoutJsonStore(JsonStore):
 
         def __init__(self):
             super().__init__(self._file_name)
+
         def add_stay(self, room_key):
             """add stay"""
             # checks for duplicate reservations
