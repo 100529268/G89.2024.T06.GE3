@@ -32,7 +32,8 @@ class JsonStore:
 
     def add_item(self, item):
         """adds item to json file"""
-        if not isinstance(item, dict): item = item.__dict__
+        if not isinstance(item, dict):
+            item = item.__dict__
         self._data_list.append(item)
         self.save_list_to_file()
 

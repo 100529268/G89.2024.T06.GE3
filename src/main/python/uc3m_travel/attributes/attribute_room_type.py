@@ -1,5 +1,6 @@
 """RoomType Attribute"""
 from uc3m_travel.attributes import Attribute
+# pylint: disable=useless-parent-delegation
 
 class RoomType(Attribute):
     """RoomType Attribute"""

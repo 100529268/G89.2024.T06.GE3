@@ -3,9 +3,10 @@
 from uc3m_travel.hotel_management_exception import HotelManagementException
 from uc3m_travel.hotel_management_config import JSON_FILES_PATH
 from uc3m_travel.storage.json_store import JsonStore
-
+# pylint: disable=invalid-name
 
 class StayJsonStore(JsonStore):
+    """Stays storage class"""
     class __StayJsonStore(JsonStore):
         """Stays storage class"""
         _file_name = JSON_FILES_PATH + "store_check_in.json"
@@ -17,7 +18,8 @@ class StayJsonStore(JsonStore):
 
         def find_stay(self, room_key):
             """Find stay from room key"""
-            return super().find_item("_HotelStay__room_key", room_key, "Error: store checkin not found")
+            return super().find_item(
+                "_HotelStay__room_key", room_key, "Error: store checkin not found")
 
         def add_stay(self, stay):
             """ adds stay to hotel """

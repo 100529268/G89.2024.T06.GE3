@@ -1,5 +1,6 @@
 """PhoneNumber Attribute"""
 from uc3m_travel.attributes import Attribute
+# pylint: disable=useless-parent-delegation
 
 class PhoneNumber(Attribute):
     """PhoneNumber Attribute"""

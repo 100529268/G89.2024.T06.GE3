@@ -1,20 +1,16 @@
 """Hotel reservation class"""
+# pylint: disable=too-many-arguments, too-many-instance-attributes, no-member, ungrouped-imports
 import hashlib
 from datetime import datetime
 from uc3m_travel.hotel_management_exception import HotelManagementException
 from uc3m_travel.storage.reservation_json_store import ReservationJsonStore
 from freezegun import freeze_time
-from .attributes import CreditCard, IDCard, ArrivalDate, NameSurname, PhoneNumber, RoomType, NumDays
-
-
-
-
-
+from uc3m_travel.attributes import CreditCard, \
+    IDCard, ArrivalDate, NameSurname, PhoneNumber, RoomType, NumDays
 
 class HotelReservation:
     """Class for representing hotel reservations"""
 
-    #pylint: disable=too-many-arguments, too-many-instance-attributes
     def __init__(self,
                  id_card: str,
                  credit_card_number: str,
@@ -37,7 +33,7 @@ class HotelReservation:
 
     def __str__(self):
         """return a json string with the elements required to calculate the localizer"""
-        #VERY IMPORTANT: JSON KEYS CANNOT BE RENAMED
+        # VERY IMPORTANT: JSON KEYS CANNOT BE RENAMED
         json_info = {"id_card": self.__id_card,
                      "name_surname": self.__name_surname,
                      "credit_card": self.__credit_card_number,
@@ -53,7 +49,6 @@ class HotelReservation:
     def load_reservation_from_localizer(cls, localizer):
         """loads hotel reservation from localizer"""
         reservations = ReservationJsonStore()
-        # reservation_data = reservations.find_reservation(Localizer(localizer).value)
         msg = "Error: store reservation not found"
         reservation_data = reservations.find_reservation(localizer, msg=msg)
 

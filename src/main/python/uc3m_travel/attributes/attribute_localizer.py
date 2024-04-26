@@ -1,5 +1,6 @@
 """Localizer Attribute"""
 from uc3m_travel.attributes import Attribute
+# pylint: disable=useless-parent-delegation
 
 class Localizer(Attribute):
     """Localizer Attribute"""

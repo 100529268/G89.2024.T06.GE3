@@ -1,4 +1,5 @@
 """Class HotelStay (GE2.2)"""
+# pylint: disable=no-member, syntax-error, no-name-in-module
 from datetime import datetime
 import hashlib
 
@@ -6,7 +7,6 @@ from uc3m_travel.hotel_reservation import HotelReservation
 from uc3m_travel.hotel_management_exception import HotelManagementException
 from uc3m_travel.storage.stay_json_store import StayJsonStore
 from uc3m_travel.attributes import RoomKey
-
 
 class HotelStay:
     """Class for representing hotel stays"""
@@ -54,11 +54,6 @@ class HotelStay:
             raise HotelManagementException("Error: today is not the departure day")
 
         return HotelStay
-
-    # def check_out(self):
-    #     """adds checkout to storage"""
-    #     CheckoutJsonStore().add_checkout()
-    #     return True
 
     @property
     def id_card(self):

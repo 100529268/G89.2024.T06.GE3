@@ -1,6 +1,7 @@
 """IDCard Attribute"""
 from uc3m_travel.attributes import Attribute
 from uc3m_travel.hotel_management_exception import HotelManagementException
+# pylint: disable=useless-parent-delegation
 
 class IDCard(Attribute):
     """IDCard Attribute"""

@@ -6,9 +6,11 @@ from uc3m_travel.storage.stay_json_store import StayJsonStore
 
 from uc3m_travel.storage import CheckoutJsonStore
 from uc3m_travel.utils.json_parser import JsonParser
-
+# pylint: disable=invalid-name
+# pylint: disable=no-member
 
 class HotelManager:
+    """Class with all the methods for managing reservations and stays"""
     class __HotelManager:
         """Class with all the methods for managing reservations and stays"""
 

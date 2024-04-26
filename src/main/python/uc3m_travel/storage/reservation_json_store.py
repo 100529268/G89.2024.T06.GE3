@@ -3,9 +3,10 @@
 from uc3m_travel.hotel_management_exception import HotelManagementException
 from uc3m_travel.hotel_management_config import JSON_FILES_PATH
 from uc3m_travel.storage.json_store import JsonStore
-
+# pylint: disable=invalid-name
 
 class ReservationJsonStore(JsonStore):
+    """Reservation JsonStore class"""
     class __ReservationJsonStore(JsonStore):
         """Reservation JsonStore class"""
         _file_name = JSON_FILES_PATH + "store_reservation.json"

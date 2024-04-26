@@ -1,6 +1,7 @@
 """CreditCard Attribute"""
 from uc3m_travel.hotel_management_exception import HotelManagementException
 from uc3m_travel.attributes import Attribute
+# pylint: disable=useless-parent-delegation
 
 class CreditCard(Attribute):
     """CreditCard Attribute"""
@@ -10,6 +11,7 @@ class CreditCard(Attribute):
         self._validation_pattern = r'^[0-9]{16}'
         self._error_message = "Invalid credit card format"
         self._attr_value = self._validate(credit_card)
+
     def _validate(self, attr_value):
         super()._validate(attr_value)
 
