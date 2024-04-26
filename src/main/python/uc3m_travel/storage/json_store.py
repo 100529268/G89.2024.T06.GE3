@@ -5,6 +5,7 @@ from uc3m_travel.hotel_management_exception import HotelManagementException
 
 class JsonStore:
     """JsonStore class"""
+
     def __init__(self, file_name):
         self._file_name = file_name
         self._data_list = []
@@ -42,4 +43,3 @@ class JsonStore:
             if item[key] == value:
                 return item
         return None
-
